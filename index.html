@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LeagueLine - Fall Softball League</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload="updateSpotsDisplay(); highlightTab('navSoftball')">
+
+<header>
+  <h2><a href="home.html">LeagueLine</a></h2>
+  <nav>
+    <a href="home.html" id="navHome">Home</a>
+    <a href="index.html" id="navSoftball">Softball</a>
+    <a href="equipment.html" id="navEquipment">Equipment</a>
+    <a href="reviews.html" id="navReviews">Reviews</a>
+  </nav>
+</header>
+
+<main>
+  <div class="box">
+       <div class="intro-text">
+      <img src="softballfield.jfif" alt="Softball on the field" class="league-photo">
+      <h1>Fall 2026 Coed Softball League</h1>
+      <p class="meta">10 week season - West Texas Rec Park - games on Saturdays and Sundays</p>
+
+      <p>
+        If you already have a group of people together and just need somewhere
+        to play, this is for you. Fill out one application instead of trying to
+        email a league organizer back and forth. If your team doesn't have its
+        own gear yet, you can rent bats, gloves, and jerseys once you're
+        accepted, instead of everyone buying their own stuff for one season.
+      </p>
+
+      <p class="price">$250 per team for the whole season</p>
+
+      <p id="spotsLeft" class="meta"></p>
+    </div>
+
+    <h3>Apply</h3>
+    <label for="teamName">Team Name*</label>
+    <input type="text" id="teamName" placeholder="Example: The Buffalo Herd">
+
+    <label for="managerEmail">Manager Email*</label>
+    <input type="email" id="managerEmail" placeholder="manager@email.com">
+
+    <label for="teamSize">Team Size*</label>
+    <input type="number" id="teamSize" placeholder="Number of players on the team">
+
+    <button type="button" onclick="handleRegistrationSubmit()">Apply Now</button>
+
+    <div id="registrationResult"></div>
+
+    <a class="btn-link" href="reviews.html">See What Other Managers Said</a>
+  </div>
+</main>
+<script src="nav.js"></script>
+<script src="product.js"></script>
+</body>
+</html>

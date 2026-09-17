@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LeagueLine - Reviews</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload="highlightTab('navReviews')">
+
+<header>
+  <h2><a href="home.html">LeagueLine</a></h2>
+  <nav>
+    <a href="home.html" id="navHome">Home</a>
+    <a href="index.html" id="navSoftball">Softball</a>
+    <a href="equipment.html" id="navEquipment">Equipment</a>
+    <a href="reviews.html" id="navReviews">Reviews</a>
+  </nav>
+</header>
+
+<main>
+  <div class="box">
+    <h1>Manager Reviews</h1>
+
+    <div class="review">
+      <p><strong>Marcus T.</strong> - <span class="stars">★★★★★</span></p>
+      <p>Ran our softball team's sign-up entirely by group text last year and almost missed the deadline. Filled out LeagueLine's application in five minutes and rented the catcher's gear same day - way less coordinating on my end.</p>
+    </div>
+
+    <div class="review">
+      <p><strong>Priya S.</strong> - <span class="stars">★★★★☆</span></p>
+      <p>Half our roster is new to organized leagues and didn't own any gear. Being able to rent jerseys through the same site we applied on saved everyone a separate errand. Wish there were more weeknight game slots, otherwise great.</p>
+    </div>
+
+    <div id="newReview"></div>
+  </div>
+
+  <div class="box">
+    <h3>Leave Feedback</h3>
+
+    <label for="reviewerName">Your Name*</label>
+    <input type="text" id="reviewerName" placeholder="Example: Jordan R.">
+
+    <label for="reviewRating">Rating</label>
+    <select id="reviewRating">
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Good</option>
+      <option value="3">3 - Average</option>
+      <option value="2">2 - Below Average</option>
+      <option value="1">1 - Poor</option>
+    </select>
+
+    <label for="reviewComment">Comments*</label>
+    <textarea id="reviewComment" rows="3" placeholder="How was your season?"></textarea>
+
+    <button type="button" onclick="handleFeedbackSubmit()">Submit Feedback</button>
+
+    <a class="btn-link" href="index.html">Back to the League Page</a>
+  </div>
+</main>
+
+<script src="reviews.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
