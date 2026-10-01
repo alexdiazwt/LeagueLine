@@ -87,15 +87,78 @@ button {
   border-radius: 0;
 }
 
-#registrationResult {
+/* message boxes under buttons - hidden until JS adds success or error */
+.message {
+  display: none;
   margin-top: 10px;
   padding: 10px;
+}
+
+.message-success {
+  display: block;
   background-color: #e3f5e9;
+}
+
+.message-error {
+  display: block;
+  background-color: #fde8e8;
+  color: #8a1c1c;
+}
+
+/* small helper text under inputs */
+.hint {
+  font-size: 13px;
+  color: #555555;
+  margin: -10px 0 15px 0;
+}
+
+.hint-ok {
+  color: #205c37;
+}
+
+.hint-error {
+  color: #8a1c1c;
+}
+
+.input-error {
+  border: 2px solid #c0392b;
+}
+
+/* equipment cards: details hidden until the mouse is over the card */
+.equipment-card {
+  padding: 10px;
+  transition: background-color 0.2s;
+}
+
+.equipment-card .item-details {
   display: none;
 }
 
-.success {
-  display: block !important;
+.equipment-card.show-details {
+  background-color: #f0f7f2;
+}
+
+.equipment-card.show-details .item-details {
+  display: block;
+}
+
+.equipment-card label {
+  display: block;
+}
+
+.qty-input {
+  width: 100px;
+}
+
+.rental-total {
+  font-size: 18px;
+  font-weight: bold;
+  color: #205c37;
+}
+
+.rating-summary {
+  font-weight: bold;
+  color: #205c37;
 }
 
 .review {

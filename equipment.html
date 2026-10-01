@@ -23,29 +23,26 @@
       Once your team is accepted into a league, you can rent any gear you
       don't already own instead of buying it for just one season.
     </p>
-
-    <div class="review">
-      <p><strong>Bats</strong></p>
-      <p class="meta">$20 per bat, for the season</p>
-    </div>
-
-    <div class="review">
-      <p><strong>Gloves</strong></p>
-      <p class="meta">$25 per glove, for the season</p>
-    </div>
-
-    <div class="review">
-      <p><strong>Jerseys</strong></p>
-      <p class="meta">$20 per jersey requested, for the season and to replace any that are lost or damaged.</p>
-    </div>
-
-    <p class="meta" style="margin-top: 20px;">
-      Renting equipment isn't available yet in this version of the site, since
-      applying for a league comes first. Check back soon.
+    <p class="meta">
+      Hover over an item to see what's included. Type how many you need and
+      your total updates as you go.
     </p>
+
+    <!-- equipment.js fills this in from the equipmentItems list -->
+    <div id="equipmentList"></div>
+
+    <p class="rental-total">Estimated season total: <span id="rentalTotal">$0.00</span></p>
+
+    <label for="rentalTeamName">Team Name*</label>
+    <input type="text" id="rentalTeamName" placeholder="Same name you used on your league application">
+
+    <button type="button" id="reserveBtn">Request Gear</button>
+
+    <div id="rentalMessage" class="message"></div>
   </div>
 </main>
 
 <script src="nav.js"></script>
+<script src="equipment.js"></script>
 </body>
 </html>
