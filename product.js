@@ -1,7 +1,5 @@
-// product.js
-// this handles the softball page - shows spots left and lets someone apply for a spot on the team
-// HW3: the Apply button now uses addEventListener, the team size box checks itself
-// while you type, and messages show on the page instead of in alert() popups.
+// product.js - softball league page
+// shows spots left, checks the application form, and saves the application
 
 var maxTeams = 12;
 var registeredTeams = 8;
@@ -9,7 +7,7 @@ var registeredTeams = 8;
 var minPlayers = 10;
 var maxPlayers = 20;
 
-// spots left = max minus however many are already signed up
+// spots left = max minus teams already signed up
 function calculateSpotsRemaining(max, registered) {
     var remaining = max - registered;
     if (remaining > 0) {
@@ -19,14 +17,13 @@ function calculateSpotsRemaining(max, registered) {
     }
 }
 
-// puts the "spots remaining" text on the page
 function updateSpotsDisplay() {
     var spots = calculateSpotsRemaining(maxTeams, registeredTeams);
     var el = document.getElementById("spotsLeft");
     el.innerHTML = spots + " of " + maxTeams + " team spots remaining this season";
 }
 
-// shows a green (isSuccess = true) or red (isSuccess = false) message under the button
+// green message if isSuccess is true, red if false
 function showRegistrationMessage(text, isSuccess) {
     var resultBox = document.getElementById("registrationResult");
     resultBox.textContent = text;
@@ -37,13 +34,13 @@ function showRegistrationMessage(text, isSuccess) {
     }
 }
 
-// true if the team size is a whole number between minPlayers and maxPlayers
+// team size has to be a whole number from 10 to 20
 function isValidTeamSize(sizeText) {
-    var size = Number(sizeText);       // the input gives us a string, turn it into a number
+    var size = Number(sizeText);   // input value is a string
     return sizeText !== "" && Number.isInteger(size) && size >= minPlayers && size <= maxPlayers;
 }
 
-// runs on every keystroke in the Team Size box (the "input" event)
+// input event - checks team size while typing
 function handleTeamSizeInput() {
     var teamSizeInput = document.getElementById("teamSize");
     var hint = document.getElementById("teamSizeHint");
@@ -64,24 +61,26 @@ function handleTeamSizeInput() {
     }
 }
 
-// runs when someone clicks Apply Now
+// click event on Apply Now
 function handleRegistrationSubmit() {
-    var teamNameInput = document.getElementById("teamName");
-    var emailInput = document.getElementById("managerEmail");
-    var teamSizeInput = document.getElementById("teamSize");
-
-    var teamName = teamNameInput.value.trim();
-    var email = emailInput.value.trim();
-    var teamSize = teamSizeInput.value;
+    var teamName = document.getElementById("teamName").value.trim();
+    var managerName = document.getElementById("managerName").value.trim();
+    var email = document.getElementById("managerEmail").value.trim();
+    var teamSize = document.getElementById("teamSize").value;
     var spotsLeft = calculateSpotsRemaining(maxTeams, registeredTeams);
 
-    // all 3 fields need something in them
-    if (teamName === "" || email === "" || teamSize === "") {
-        showRegistrationMessage("Please fill in your team name, email, and team size.", false);
+    if (teamName === "" || managerName === "" || email === "" || teamSize === "") {
+        showRegistrationMessage("Please fill in your team name, manager name, email, and team size.", false);
         return;
     }
 
-    // basic email check - just makes sure it has an @ and a dot after it
+    // no two teams with the same name
+    if (findApplicationByTeamName(teamName) !== null) {
+        showRegistrationMessage("A team named \"" + teamName + "\" has already applied. Check its status on the My Team page, or pick a different name.", false);
+        return;
+    }
+
+    // basic email check - needs an @ and a dot after it
     var atPosition = email.indexOf("@");
     var dotPosition = email.lastIndexOf(".");
     if (atPosition < 1 || dotPosition < atPosition + 2) {
@@ -94,44 +93,72 @@ function handleRegistrationSubmit() {
         return;
     }
 
-    // no more spots = no more applying
     if (spotsLeft <= 0) {
         showRegistrationMessage("Sorry, this league is full. Check back next season!", false);
         return;
     }
 
-    // confirm - true if they hit ok, false if cancel
-    var proceed = confirm("Submit \"" + teamName + "\"'s application for the Fall Softball League?");
-    if (proceed === false) {
-        return;
-    }
+    // confirm on the page (confirmbox.js)
+    // saveTeamApplication only runs if they click Submit Application
+    askToConfirm(
+        document.getElementById("registrationResult"),
+        "Submit " + teamName + "'s application (" + teamSize + " players) for the Fall 2026 Coed Softball League?",
+        "Submit Application",
+        function () {
+            saveTeamApplication(teamName, managerName, email, teamSize);
+        }
+    );
+}
 
-    // not touching registeredTeams here since applying isn't the same
-    // as actually getting a spot yet
+// saves the application after they confirm
+function saveTeamApplication(teamName, managerName, email, teamSize) {
+    // new id after the last one, like APP-1004
+    var newId = "APP-" + (getAllApplications().length + 1001);
+
+    // same fields as the applications collection
+    var application = {
+        applicationId: newId,
+        teamName: teamName,
+        managerName: managerName,
+        managerEmail: email,
+        leagueId: "softball-fall-2026",
+        leagueName: "Fall 2026 Coed Softball League",
+        teamSize: Number(teamSize),
+        status: "pending",
+        submittedAt: todayText(),
+        leagueFee: 250,
+        feePaid: false
+    };
+
+    saveApplication(application);
+
+    // registeredTeams stays the same - applying isn't the same as getting a spot
     showRegistrationMessage(
-        "Thanks, " + teamName + "! We got your " + teamSize + "-player roster - we'll confirm your spot by email at " + email + ".",
+        "Thanks, " + teamName + "! We got your " + teamSize + "-player roster - we'll confirm your spot by email at " + email +
+        ". You can check your status anytime on the My Team page.",
         true
     );
 
-    teamNameInput.value = "";
-    emailInput.value = "";
-    teamSizeInput.value = "";
-    handleTeamSizeInput();   // resets the hint text back to normal
+    document.getElementById("teamName").value = "";
+    document.getElementById("managerName").value = "";
+    document.getElementById("managerEmail").value = "";
+    document.getElementById("teamSize").value = "";
+    handleTeamSizeInput();   // reset the hint text
 }
 
-// attach the listeners
 document.getElementById("teamSize").addEventListener("input", handleTeamSizeInput);
 document.getElementById("applyBtn").addEventListener("click", handleRegistrationSubmit);
 
-// keyboard event: pressing Enter in any of the 3 form boxes submits the application,
-// the same as clicking Apply Now. "event" is the event object the browser passes in -
-// event.key is a string naming the key that was pressed ("Enter", "a", "Escape", ...).
+// pressing Enter in a form box works like clicking Apply Now
+// preventDefault stops Enter from also clicking the confirm button
 function handleEnterKey(event) {
     if (event.key === "Enter") {
+        event.preventDefault();
         handleRegistrationSubmit();
     }
 }
 
 document.getElementById("teamName").addEventListener("keydown", handleEnterKey);
+document.getElementById("managerName").addEventListener("keydown", handleEnterKey);
 document.getElementById("managerEmail").addEventListener("keydown", handleEnterKey);
 document.getElementById("teamSize").addEventListener("keydown", handleEnterKey);

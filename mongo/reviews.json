@@ -1,0 +1,20 @@
+[
+  {
+    "reviewerName": "Marcus T.",
+    "rating": 5,
+    "leagueId": "softball-fall-2026",
+    "comment": "Ran our softball team's sign-up entirely by group text last year and almost missed the deadline. Filled out LeagueLine's application in five minutes and rented the catcher's gear same day - way less coordinating on my end.",
+    "createdAt": {
+      "$date": "2026-09-20T00:00:00.000Z"
+    }
+  },
+  {
+    "reviewerName": "Priya S.",
+    "rating": 4,
+    "leagueId": "softball-fall-2026",
+    "comment": "Half our roster is new to organized leagues and didn't own any gear. Being able to rent jerseys through the same site we applied on saved everyone a separate errand. Wish there were more weeknight game slots, otherwise great.",
+    "createdAt": {
+      "$date": "2026-10-02T00:00:00.000Z"
+    }
+  }
+]

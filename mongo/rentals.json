@@ -1,0 +1,94 @@
+[
+  {
+    "rentalId": "RENT-2001",
+    "applicationId": "APP-1001",
+    "status": "approved",
+    "requestedAt": {
+      "$date": "2026-09-05T00:00:00.000Z"
+    },
+    "items": [
+      {
+        "itemId": "bat",
+        "name": "Bats",
+        "size": null,
+        "quantity": 2,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "glove",
+        "name": "Gloves",
+        "size": "Left hand",
+        "quantity": 1,
+        "pricePerSeason": 25
+      },
+      {
+        "itemId": "glove",
+        "name": "Gloves",
+        "size": "Right hand",
+        "quantity": 3,
+        "pricePerSeason": 25
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "S",
+        "quantity": 2,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "M",
+        "quantity": 5,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "L",
+        "quantity": 4,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "XL",
+        "quantity": 3,
+        "pricePerSeason": 20
+      }
+    ],
+    "gearPaid": false
+  },
+  {
+    "rentalId": "RENT-2002",
+    "applicationId": "APP-1002",
+    "status": "fulfilled",
+    "requestedAt": {
+      "$date": "2026-08-30T00:00:00.000Z"
+    },
+    "items": [
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "M",
+        "quantity": 4,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "L",
+        "quantity": 5,
+        "pricePerSeason": 20
+      },
+      {
+        "itemId": "jersey",
+        "name": "Jerseys",
+        "size": "XL",
+        "quantity": 3,
+        "pricePerSeason": 20
+      }
+    ],
+    "gearPaid": true
+  }
+]

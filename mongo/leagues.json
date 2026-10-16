@@ -1,0 +1,61 @@
+[
+  {
+    "leagueId": "softball-fall-2026",
+    "sport": "softball",
+    "name": "Fall 2026 Coed Softball League",
+    "season": "Fall 2026",
+    "location": "West Texas Rec Park",
+    "gameDays": [
+      "Saturday",
+      "Sunday"
+    ],
+    "seasonWeeks": 10,
+    "feePerTeam": 250,
+    "maxTeams": 12,
+    "registeredTeams": 8,
+    "minPlayers": 10,
+    "maxPlayers": 20,
+    "status": "open",
+    "description": "A 10-week coed slow-pitch league for teams that already have players and just need somewhere to play.",
+    "imageUrl": "images/sport-softball.png"
+  },
+  {
+    "leagueId": "soccer-spring-2027",
+    "sport": "soccer",
+    "name": "Spring 2027 Coed Soccer League",
+    "season": "Spring 2027",
+    "location": "West Texas Rec Park",
+    "gameDays": [
+      "Saturday"
+    ],
+    "seasonWeeks": 8,
+    "feePerTeam": 300,
+    "maxTeams": 10,
+    "registeredTeams": 0,
+    "minPlayers": 9,
+    "maxPlayers": 16,
+    "status": "coming-soon",
+    "description": "An 8-week coed 7v7 soccer league. Applications open in January.",
+    "imageUrl": "images/sport-soccer.png"
+  },
+  {
+    "leagueId": "basketball-winter-2027",
+    "sport": "basketball",
+    "name": "Winter 2027 Coed Basketball League",
+    "season": "Winter 2027",
+    "location": "West Texas Rec Park Gym",
+    "gameDays": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "seasonWeeks": 8,
+    "feePerTeam": 200,
+    "maxTeams": 8,
+    "registeredTeams": 0,
+    "minPlayers": 5,
+    "maxPlayers": 10,
+    "status": "coming-soon",
+    "description": "An 8-week indoor 5v5 league on weeknights.",
+    "imageUrl": "images/sport-basketball.png"
+  }
+]

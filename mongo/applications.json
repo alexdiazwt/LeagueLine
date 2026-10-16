@@ -1,0 +1,47 @@
+[
+  {
+    "applicationId": "APP-1001",
+    "teamName": "Buffalo Herd",
+    "managerName": "Marcus T.",
+    "managerEmail": "marcus@email.com",
+    "leagueId": "softball-fall-2026",
+    "leagueName": "Fall 2026 Coed Softball League",
+    "teamSize": 14,
+    "status": "approved",
+    "submittedAt": {
+      "$date": "2026-09-02T00:00:00.000Z"
+    },
+    "leagueFee": 250,
+    "feePaid": false
+  },
+  {
+    "applicationId": "APP-1002",
+    "teamName": "Dust Devils",
+    "managerName": "Priya S.",
+    "managerEmail": "priya@email.com",
+    "leagueId": "softball-fall-2026",
+    "leagueName": "Fall 2026 Coed Softball League",
+    "teamSize": 12,
+    "status": "approved",
+    "submittedAt": {
+      "$date": "2026-08-28T00:00:00.000Z"
+    },
+    "leagueFee": 250,
+    "feePaid": true
+  },
+  {
+    "applicationId": "APP-1003",
+    "teamName": "Canyon Crushers",
+    "managerName": "Jordan R.",
+    "managerEmail": "jordan@email.com",
+    "leagueId": "softball-fall-2026",
+    "leagueName": "Fall 2026 Coed Softball League",
+    "teamSize": 11,
+    "status": "pending",
+    "submittedAt": {
+      "$date": "2026-10-12T00:00:00.000Z"
+    },
+    "leagueFee": 250,
+    "feePaid": false
+  }
+]

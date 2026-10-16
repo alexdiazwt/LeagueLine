@@ -1,0 +1,22 @@
+[
+  {
+    "senderName": "Jordan R.",
+    "senderEmail": "jordan@email.com",
+    "topic": "equipment",
+    "message": "Do you have left-handed gloves in stock for our first game?",
+    "sentAt": {
+      "$date": "2026-10-13T00:00:00.000Z"
+    },
+    "status": "new"
+  },
+  {
+    "senderName": "Priya S.",
+    "senderEmail": "priya@email.com",
+    "topic": "payment",
+    "message": "Can we pay the league fee and the jersey rental together at the front desk?",
+    "sentAt": {
+      "$date": "2026-09-01T00:00:00.000Z"
+    },
+    "status": "answered"
+  }
+]

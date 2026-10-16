@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <title>LeagueLine - Reviews</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 </head>
 <body onload="highlightTab('navReviews')">
 
 <header>
-  <h2><a href="home.html">LeagueLine</a></h2>
-  <nav>
-    <a href="home.html" id="navHome">Home</a>
-    <a href="index.html" id="navSoftball">Softball</a>
-    <a href="equipment.html" id="navEquipment">Equipment</a>
-    <a href="reviews.html" id="navReviews">Reviews</a>
-  </nav>
+  <div class="header-inner">
+    <h2><a href="index.html">LeagueLine</a></h2>
+    <nav>
+      <a href="index.html" id="navHome">Home</a>
+      <a href="softball.html" id="navSoftball">Softball</a>
+      <a href="equipment.html" id="navEquipment">Equipment</a>
+      <a href="myteam.html" id="navMyTeam">My Team</a>
+      <a href="reviews.html" id="navReviews">Reviews</a>
+      <a href="faq.html" id="navFaq">FAQ</a>
+    </nav>
+  </div>
 </header>
 
 <main>
   <div class="box">
     <h1>Manager Reviews</h1>
     <p id="ratingSummary" class="rating-summary"></p>
+    <!-- star bars (reviews.js) -->
+    <div id="ratingBreakdown" class="rating-breakdown"></div>
 
-    <!-- data-rating holds each review's rating as a number so reviews.js can average them -->
+    <!-- data-rating is used to get the average -->
     <div id="reviewList">
       <div class="review" data-rating="5">
         <p><strong>Marcus T.</strong> - <span class="stars">★★★★★</span></p>
@@ -36,7 +48,7 @@
   </div>
 
   <div class="box">
-    <h3>Leave Feedback</h3>
+    <h2>Leave Feedback</h2>
 
     <label for="reviewerName">Your Name*</label>
     <input type="text" id="reviewerName" placeholder="Example: Jordan R.">
@@ -58,11 +70,27 @@
 
     <div id="feedbackMessage" class="message"></div>
 
-    <a class="btn-link" href="index.html">Back to the League Page</a>
+    <a class="btn-link btn-secondary" href="softball.html">Back to the League Page</a>
   </div>
 </main>
 
-<script src="reviews.js"></script>
+<footer>
+  <p><strong>LeagueLine</strong>: league sign-ups and gear rental for local softball, soccer, and basketball teams</p>
+  <p>
+    <a href="index.html">Home</a>
+    <a href="softball.html">Softball</a>
+    <a href="equipment.html">Equipment</a>
+    <a href="myteam.html">My Team</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+  </p>
+  <p class="footer-small">&copy; 2026 LeagueLine, West Texas Rec Park</p>
+</footer>
+
+
 <script src="nav.js"></script>
+<script src="teamdata.js"></script>
+<script src="confirmbox.js"></script>
+<script src="reviews.js"></script>
 </body>
 </html>

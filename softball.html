@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<title>LeagueLine - Fall Softball League</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload="updateSpotsDisplay(); highlightTab('navSoftball')">
+
+<header>
+  <div class="header-inner">
+    <h2><a href="index.html">LeagueLine</a></h2>
+    <nav>
+      <a href="index.html" id="navHome">Home</a>
+      <a href="softball.html" id="navSoftball">Softball</a>
+      <a href="equipment.html" id="navEquipment">Equipment</a>
+      <a href="myteam.html" id="navMyTeam">My Team</a>
+      <a href="reviews.html" id="navReviews">Reviews</a>
+      <a href="faq.html" id="navFaq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wide">
+  <!-- league info on the left, form on the right -->
+  <div class="league-layout">
+    <div class="box league-info">
+      <img src="images/softballfield.jpg" alt="Lit softball field at West Texas Rec Park" class="league-photo">
+      <h1>Fall 2026 Coed Softball League</h1>
+      <p class="meta">10-week season at West Texas Rec Park, with games on Saturdays and Sundays</p>
+
+      <p>
+        If you already have a group of people together and just need somewhere
+        to play, this is for you. Fill out one application instead of trying to
+        email a league organizer back and forth. If your team doesn't have its
+        own gear yet, you can rent bats, gloves, and jerseys once you're
+        accepted, instead of everyone buying their own stuff for one season.
+      </p>
+
+      <!-- same info as the leagues collection -->
+      <table class="data-table league-facts">
+        <tr><th>Season</th><td>Fall 2026, 10 weeks</td></tr>
+        <tr><th>Location</th><td>West Texas Rec Park</td></tr>
+        <tr><th>Game days</th><td>Saturdays and Sundays</td></tr>
+        <tr><th>Team size</th><td>10 to 20 players</td></tr>
+        <tr><th>League fee</th><td>$250 per team</td></tr>
+      </table>
+
+      <a class="btn-link btn-secondary" href="reviews.html">See What Other Managers Said</a>
+    </div>
+
+    <aside class="box apply-panel">
+      <h2>Apply for this league</h2>
+      <p class="price">$250 <span class="meta">per team for the whole season</span></p>
+      <p id="spotsLeft" class="meta"></p>
+
+      <label for="teamName">Team Name*</label>
+      <input type="text" id="teamName" placeholder="Example: The Buffalo Herd">
+
+      <label for="managerName">Manager Name*</label>
+      <input type="text" id="managerName" placeholder="Example: Jordan R.">
+
+      <label for="managerEmail">Manager Email*</label>
+      <input type="email" id="managerEmail" placeholder="manager@email.com">
+
+      <label for="teamSize">Team Size*</label>
+      <input type="number" id="teamSize" placeholder="Number of players on the team">
+      <p id="teamSizeHint" class="hint">Teams need 10 to 20 players.</p>
+
+      <button type="button" id="applyBtn">Apply Now</button>
+
+      <div id="registrationResult" class="message"></div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <p><strong>LeagueLine</strong>: league sign-ups and gear rental for local softball, soccer, and basketball teams</p>
+  <p>
+    <a href="index.html">Home</a>
+    <a href="softball.html">Softball</a>
+    <a href="equipment.html">Equipment</a>
+    <a href="myteam.html">My Team</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+  </p>
+  <p class="footer-small">&copy; 2026 LeagueLine, West Texas Rec Park</p>
+</footer>
+
+<script src="nav.js"></script>
+<script src="teamdata.js"></script>
+<script src="confirmbox.js"></script>
+<script src="product.js"></script>
+</body>
+</html>

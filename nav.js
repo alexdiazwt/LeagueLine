@@ -1,7 +1,6 @@
-// LeagueLine - nav.js
-// Highlights which page is currently active in the header nav.
+// nav.js - underlines and bolds the link for the page you're on
+// uses the style property to change the link's CSS
 
-// Takes the id of the current page's nav link as an argument.
 function highlightTab(tabId) {
     var tab = document.getElementById(tabId);
     tab.style.textDecoration = "underline";

@@ -1,26 +1,36 @@
-// reviews.js
-// Reviews page:
-//   change (rating dropdown)   -> star preview next to the label updates
-//   input  (typing a comment)  -> live character counter
-//   click  (Submit Feedback)   -> checks the form, adds the review to the list,
-//                                 and recalculates the average rating
+// reviews.js - reviews page
+// star preview, character counter, star breakdown bars, and adding new reviews
+// new reviews are saved in localStorage so they stay after a refresh
 
 var minCommentLength = 20;
-var maxCommentLength = 300;   // matches maxlength="300" on the textarea
+var maxCommentLength = 300;   // same as maxlength on the textarea
 
-// turns a rating number like 4 into "★★★★☆"
+// 4 -> "★★★★☆"
 function renderStars(rating) {
-    return "★".repeat(rating) + "☆".repeat(5 - rating);
+    var stars = "";
+    for (var i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars = stars + "★";
+        } else {
+            stars = stars + "☆";
+        }
+    }
+    return stars;
 }
 
-// averages the data-rating of every review in the list and shows it at the top
+// average of every review's data-rating, plus how many of each star
 function updateRatingSummary() {
     var reviews = document.querySelectorAll("#reviewList .review");
     var total = 0;
+    var counts = [0, 0, 0, 0, 0, 0];   // counts[5] = number of 5 star reviews (counts[0] not used)
 
     for (var i = 0; i < reviews.length; i++) {
-        total = total + Number(reviews[i].dataset.rating);   // dataset.rating is a string
+        var rating = Number(reviews[i].dataset.rating);
+        total = total + rating;
+        counts[rating] = counts[rating] + 1;
     }
+
+    updateRatingBreakdown(counts, reviews.length);
 
     var summary = document.getElementById("ratingSummary");
     if (reviews.length === 0) {
@@ -32,13 +42,50 @@ function updateRatingSummary() {
     summary.textContent = "Average rating: " + average.toFixed(1) + " out of 5 (" + reviews.length + " reviews)";
 }
 
-// "change" event on the rating dropdown
+// one bar for each star level, 5 down to 1
+// the bar width is set with the style property
+function updateRatingBreakdown(counts, reviewCount) {
+    var breakdown = document.getElementById("ratingBreakdown");
+    breakdown.innerHTML = "";
+
+    for (var stars = 5; stars >= 1; stars--) {
+        var percent = 0;
+        if (reviewCount > 0) {
+            percent = Math.round((counts[stars] / reviewCount) * 100);
+        }
+
+        var row = document.createElement("div");
+        row.className = "rating-row";
+
+        var label = document.createElement("span");
+        label.className = "rating-label";
+        label.textContent = stars + " star";
+
+        var track = document.createElement("span");
+        track.className = "rating-track";
+        var fill = document.createElement("span");
+        fill.className = "rating-fill";
+        fill.style.width = percent + "%";
+        track.appendChild(fill);
+
+        var count = document.createElement("span");
+        count.className = "rating-count";
+        count.textContent = counts[stars];
+
+        row.appendChild(label);
+        row.appendChild(track);
+        row.appendChild(count);
+        breakdown.appendChild(row);
+    }
+}
+
+// change event on the rating dropdown
 function handleRatingChange() {
     var rating = Number(document.getElementById("reviewRating").value);
     document.getElementById("starPreview").textContent = renderStars(rating);
 }
 
-// "input" event on the comment box - runs on every keystroke
+// input event on the comment box
 function handleCommentInput() {
     var length = document.getElementById("reviewComment").value.trim().length;
     var counter = document.getElementById("charCount");
@@ -54,7 +101,7 @@ function handleCommentInput() {
     }
 }
 
-// green (isSuccess = true) or red (isSuccess = false) message under the button
+// green message if isSuccess is true, red if false
 function showFeedbackMessage(text, isSuccess) {
     var box = document.getElementById("feedbackMessage");
     box.textContent = text;
@@ -65,12 +112,12 @@ function showFeedbackMessage(text, isSuccess) {
     }
 }
 
-// builds a new review block. textContent is used for the name and comment
-// so anything a user types is shown as plain text, never run as HTML.
+// makes a new review block
+// textContent so whatever someone types shows as plain text
 function buildReviewElement(name, rating, comment) {
     var reviewDiv = document.createElement("div");
     reviewDiv.className = "review";
-    reviewDiv.dataset.rating = rating;          // becomes data-rating="4"
+    reviewDiv.dataset.rating = rating;   // data-rating="4"
 
     var header = document.createElement("p");
     var nameTag = document.createElement("strong");
@@ -90,15 +137,11 @@ function buildReviewElement(name, rating, comment) {
     return reviewDiv;
 }
 
-// "click" event on Submit Feedback
+// click event on Submit Feedback
 function handleFeedbackSubmit() {
-    var nameInput = document.getElementById("reviewerName");
-    var ratingSelect = document.getElementById("reviewRating");
-    var commentInput = document.getElementById("reviewComment");
-
-    var name = nameInput.value.trim();
-    var rating = Number(ratingSelect.value);    // "4" -> 4
-    var comment = commentInput.value.trim();
+    var name = document.getElementById("reviewerName").value.trim();
+    var rating = Number(document.getElementById("reviewRating").value);
+    var comment = document.getElementById("reviewComment").value.trim();
 
     if (name === "") {
         showFeedbackMessage("Please enter your name.", false);
@@ -109,30 +152,59 @@ function handleFeedbackSubmit() {
         return;
     }
 
-    var proceed = confirm("Submit this feedback for " + name + "?");
-    if (proceed === false) {
-        return;
-    }
+    // confirm on the page (confirmbox.js)
+    // postReview only runs if they click Post Review
+    askToConfirm(
+        document.getElementById("feedbackMessage"),
+        "Post this " + rating + "-star review as " + name + "?",
+        "Post Review",
+        function () {
+            postReview(name, rating, comment);
+        }
+    );
+}
 
-    // add the new review to the end of the list, then redo the average
+// saves the review after they confirm
+function postReview(name, rating, comment) {
+    // same fields as the reviews collection
+    var savedReviews = loadSavedList(reviewsKey);
+    savedReviews.push({
+        reviewerName: name,
+        rating: rating,
+        leagueId: "softball-fall-2026",
+        comment: comment,
+        createdAt: todayText()
+    });
+    saveList(reviewsKey, savedReviews);
+
     document.getElementById("reviewList").appendChild(buildReviewElement(name, rating, comment));
     updateRatingSummary();
 
     showFeedbackMessage("Thanks for your feedback, " + name + "!", true);
 
-    nameInput.value = "";
-    commentInput.value = "";
-    ratingSelect.value = "5";
+    document.getElementById("reviewerName").value = "";
+    document.getElementById("reviewComment").value = "";
+    document.getElementById("reviewRating").value = "5";
     handleRatingChange();
     handleCommentInput();
 }
 
-// attach the listeners
+// adds the reviews saved in this browser after the two on the page
+function showSavedReviews() {
+    var savedReviews = loadSavedList(reviewsKey);
+    var list = document.getElementById("reviewList");
+    for (var i = 0; i < savedReviews.length; i++) {
+        var review = savedReviews[i];
+        list.appendChild(buildReviewElement(review.reviewerName, review.rating, review.comment));
+    }
+}
+
 document.getElementById("reviewRating").addEventListener("change", handleRatingChange);
 document.getElementById("reviewComment").addEventListener("input", handleCommentInput);
 document.getElementById("submitFeedbackBtn").addEventListener("click", handleFeedbackSubmit);
 
-// fill in the summary, star preview, and counter when the page first loads
+// when the page loads
+showSavedReviews();
 updateRatingSummary();
 handleRatingChange();
 handleCommentInput();

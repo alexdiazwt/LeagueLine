@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<title>LeagueLine - FAQ and Contact</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload="highlightTab('navFaq')">
+
+<header>
+  <div class="header-inner">
+    <h2><a href="index.html">LeagueLine</a></h2>
+    <nav>
+      <a href="index.html" id="navHome">Home</a>
+      <a href="softball.html" id="navSoftball">Softball</a>
+      <a href="equipment.html" id="navEquipment">Equipment</a>
+      <a href="myteam.html" id="navMyTeam">My Team</a>
+      <a href="reviews.html" id="navReviews">Reviews</a>
+      <a href="faq.html" id="navFaq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="box">
+    <h1>Frequently Asked Questions</h1>
+    <p class="meta">Click a question to see the answer.</p>
+
+    <!-- click a question to open it (faq.js) -->
+    <div class="faq-item">
+      <button type="button" class="faq-question">How many players does my team need?</button>
+      <div class="faq-answer">
+        <p>Softball teams need 10 to 20 players. The application form checks this for you as you type.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-question">When will I know if my team got in?</button>
+      <div class="faq-answer">
+        <p>Most applications are reviewed within 3 business days. You'll get an email, and you can check anytime on the <a href="myteam.html">My Team</a> page.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" id="payment">
+      <button type="button" class="faq-question">How do I pay the league fee and gear rental?</button>
+      <div class="faq-answer">
+        <p>Your balance shows on the <a href="myteam.html">My Team</a> page once your application is approved. Pay at the West Texas Rec Park front desk with cash or card before your first game. Online payment is coming soon.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-question">Where do I pick up rented gear?</button>
+      <div class="faq-answer">
+        <p>At the Rec Park equipment shed, open Saturdays from 8 AM to noon. Bring your team name. Gear is returned after your final game.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-question">What if rented gear gets lost or damaged?</button>
+      <div class="faq-answer">
+        <p>Jersey rentals already cover lost or damaged jerseys. Lost or broken bats, gloves, or catcher's gear are charged at replacement cost.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-question">What happens if a game gets rained out?</button>
+      <div class="faq-answer">
+        <p>Rained-out games are rescheduled, usually to the following Sunday. Managers get an email with the new time.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-question">Can I get a refund?</button>
+      <div class="faq-answer">
+        <p>Yes, a full refund of the league fee if your team withdraws before the first game. After the season starts, fees can't be refunded.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Contact Us</h2>
+    <p>Didn't find your answer? Send us a message, or stop by the West Texas Rec Park front desk, Monday to Friday, 9 AM to 5 PM.</p>
+
+    <label for="contactName">Your Name*</label>
+    <input type="text" id="contactName" placeholder="Example: Jordan R.">
+
+    <label for="contactEmail">Email*</label>
+    <input type="email" id="contactEmail" placeholder="manager@email.com">
+
+    <label for="contactTopic">Topic</label>
+    <select id="contactTopic">
+      <option value="league">League question</option>
+      <option value="equipment">Equipment rental</option>
+      <option value="payment">Payment</option>
+      <option value="other">Something else</option>
+    </select>
+
+    <label for="contactMessage">Message*</label>
+    <textarea id="contactMessage" rows="4" maxlength="500" placeholder="How can we help?"></textarea>
+
+    <button type="button" id="contactBtn">Send Message</button>
+
+    <div id="contactResult" class="message"></div>
+  </div>
+</main>
+
+<footer>
+  <p><strong>LeagueLine</strong>: league sign-ups and gear rental for local softball, soccer, and basketball teams</p>
+  <p>
+    <a href="index.html">Home</a>
+    <a href="softball.html">Softball</a>
+    <a href="equipment.html">Equipment</a>
+    <a href="myteam.html">My Team</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+  </p>
+  <p class="footer-small">&copy; 2026 LeagueLine, West Texas Rec Park</p>
+</footer>
+
+<script src="nav.js"></script>
+<script src="faq.js"></script>
+</body>
+</html>

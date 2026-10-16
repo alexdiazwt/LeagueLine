@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- LeagueLine icon: a ball diamond on dugout green -->
+  <rect width="64" height="64" rx="12" fill="#133b24"/>
+  <path d="M32 12 L52 32 L32 52 L12 32 Z" fill="none" stroke="#f2b705" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="6" fill="#ffffff"/>
+</svg>
