@@ -11,6 +11,13 @@ app.use(express.static(__dirname));
 
 let db;
 
+// same email check as the website: an @ with a dot somewhere after it
+function looksLikeEmail(email) {
+  const atPosition = email.indexOf("@");
+  const dotPosition = email.lastIndexOf(".");
+  return atPosition >= 1 && dotPosition >= atPosition + 2;
+}
+
 // ROUTE: send every league to the browser
 app.get("/api/leagues", async (req, res) => {
   const leagues = await db.collection("leagues").find().toArray();
@@ -40,7 +47,7 @@ app.post("/api/applications", async (req, res) => {
   if (!teamName || !managerName || !managerEmail || !teamSize) {
     return res.status(400).json({ error: "Please fill in your team name, manager name, email, and team size." });
   }
-  if (!/^\S+@\S+\.\S+$/.test(managerEmail)) {
+  if (!looksLikeEmail(managerEmail)) {
     return res.status(400).json({ error: "Please enter a valid email, like manager@email.com." });
   }
 
@@ -126,7 +133,7 @@ app.post("/api/messages", async (req, res) => {
   if (!senderName || !senderEmail || !message) {
     return res.status(400).json({ error: "Please fill in your name, email, and message." });
   }
-  if (!/^\S+@\S+\.\S+$/.test(senderEmail)) {
+  if (!looksLikeEmail(senderEmail)) {
     return res.status(400).json({ error: "Please enter a valid email, like manager@email.com." });
   }
   if (!topics.includes(topic)) {
@@ -264,4 +271,6 @@ MongoClient.connect(MONGO_URL).then((client) => {
   app.listen(PORT, () => {
     console.log("LeagueLine running at http://localhost:" + PORT);
   });
+}).catch(() => {
+  console.log("Could not connect to MongoDB at " + MONGO_URL + ". Make sure MongoDB is running, then run npm start again.");
 });

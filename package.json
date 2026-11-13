@@ -1,7 +1,7 @@
 {
   "name": "leagueline",
   "version": "1.0.0",
-  "description": "LeagueLine is a webisite that allows managers and users to view and manage their rec league teams. It is built using Node.js, Express, and MongoDB.",
+  "description": "LeagueLine is a website that allows managers and users to view and manage their rec league teams. It is built using Node.js, Express, and MongoDB.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
