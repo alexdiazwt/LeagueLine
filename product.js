@@ -147,8 +147,9 @@ async function saveTeamApplication(teamName, managerName, email, teamSize) {
         }
 
         showRegistrationMessage(
-            "Thanks, " + data.teamName + "! Application " + data.applicationId + " is pending. We'll confirm your spot by email at " +
-            data.managerEmail + ". Next step: rent any gear you need on the Equipment page, or check your status on My Team.",
+            "Thanks, " + data.teamName + "! Application " + data.applicationId + " is pending, and we'll confirm your spot by email at " +
+            data.managerEmail + ". Next step: rent any gear your team needs on the Equipment page. " +
+            "You can check your status anytime on My Team - just enter your team name and email to see your application, gear, and balance.",
             true
         );
 

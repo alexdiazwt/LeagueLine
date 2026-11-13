@@ -220,7 +220,7 @@ async function handleReserveClick() {
         return;
     }
 
-        var savedCount = currentItemCount;
+    var savedCount = currentItemCount;
 
     try {
         var response = await fetch("/api/rentals", {
@@ -244,7 +244,8 @@ async function handleReserveClick() {
         updateTotal();
 
         showMessage("Thanks, " + data.teamName + "! Gear request " + data.rental.rentalId + " for " + savedCount +
-            " item(s), " + formatMoney(data.total) + " for the season, is pending. Track it on the My Team page.", true);
+            " item(s), " + formatMoney(data.total) + " for the season, is pending. " +
+            "Track it on My Team with your team name and email - you'll see when it's ready for pickup.", true);
     } catch (error) {
         showMessage("We couldn't reach LeagueLine right now. Please try again in a minute.", false);
     }

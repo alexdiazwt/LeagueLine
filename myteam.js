@@ -1,7 +1,7 @@
 // myteam.js - My Team page
 // a manager looks up their team and sees their application status,
 // their gear request status, and what they still owe
-// (team data and the find functions are in teamdata.js)
+// (team data comes from MongoDB through GET /api/myteam)
 
 // steps for the status trackers, in order
 var applicationSteps = [
