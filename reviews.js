@@ -1,6 +1,6 @@
 // reviews.js - reviews page
 // star preview, character counter, star breakdown bars, and adding new reviews
-// new reviews are saved in localStorage so they stay after a refresh
+// new reviews are saved in MongoDB through POST /api/reviews, and all reviews are loaded through GET /api/reviews
 
 var minCommentLength = 20;
 var maxCommentLength = 300;   // same as maxlength on the textarea

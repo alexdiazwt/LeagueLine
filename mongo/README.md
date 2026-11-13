@@ -102,5 +102,4 @@ prints how many documents each has.
 - `rentals.items[].itemId` → `equipment.itemId`
 - `rentals.items[].size` → one of that item's `equipment.sizes`
 
-Until the Node/Express server exists, new applications, gear requests, and reviews are saved
-in the browser (`localStorage`) using these same fields.
+The website reads and saves all of this data through the Express server in server.js.

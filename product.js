@@ -1,5 +1,5 @@
 // product.js - softball league page
-// shows spots left, checks the application form, and saves the application
+// shows spots left, checks the application form, and sends the application to the server
 
 var maxTeams = 12;
 var registeredTeams = 8;

@@ -1,6 +1,6 @@
 // equipment.js - equipment rental page
 // builds the item cards, updates "Your Request" and the total while typing,
-// and saves the gear request
+// and sends the gear request to the server
 
 // same fields as the equipment collection in MongoDB
 // filled from MongoDB by loadEquipment() when the page opens
