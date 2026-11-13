@@ -3,52 +3,8 @@
 // and saves the gear request
 
 // same fields as the equipment collection in MongoDB
-var equipmentItems = [
-    {
-        itemId: "bat",
-        name: "Bats",
-        sport: "softball",
-        pricePerSeason: 20,
-        quantityAvailable: 15,
-        isAvailable: true,
-        details: "Aluminum slow-pitch bats, 34 inch. Grip tape included.",
-        sizes: null,                  // null = no sizes
-        imageUrl: "images/equip-bat.png"
-    },
-    {
-        itemId: "glove",
-        name: "Gloves",
-        sport: "softball",
-        pricePerSeason: 25,
-        quantityAvailable: 20,
-        isAvailable: true,
-        details: "12 inch fielding gloves.",
-        sizes: ["Left hand", "Right hand"],
-        imageUrl: "images/equip-glove.png"
-    },
-    {
-        itemId: "jersey",
-        name: "Jerseys",
-        sport: "softball",
-        pricePerSeason: 20,
-        quantityAvailable: 40,
-        isAvailable: true,
-        details: "Numbered team jerseys. Price also covers replacing any that are lost or damaged.",
-        sizes: ["S", "M", "L", "XL", "2XL"],
-        imageUrl: "images/equip-jersey.png"
-    },
-    {
-        itemId: "catcher-gear",
-        name: "Catcher's Gear Set",
-        sport: "softball",
-        pricePerSeason: 35,
-        quantityAvailable: 0,
-        isAvailable: false,
-        details: "Helmet, chest protector, and shin guards.",
-        sizes: null,
-        imageUrl: "images/equip-catcher-gear.png"
-    }
-];
+// filled from MongoDB by loadEquipment() when the page opens
+var equipmentItems = [];
 
 var equipmentList = document.getElementById("equipmentList");
 var orderSummary = document.getElementById("orderSummary");
@@ -248,7 +204,7 @@ function hideDetails() {
 }
 
 // click event on Request Gear
-function handleReserveClick() {
+async function handleReserveClick() {
     var teamName = rentalTeamName.value.trim();
 
     if (teamName === "") {
@@ -264,56 +220,61 @@ function handleReserveClick() {
         return;
     }
 
-    // the team has to apply first
-    var application = findApplicationByTeamName(teamName);
-    if (application === null) {
-        showMessage("We couldn't find a league application for \"" + teamName + "\". Apply on the Softball page first, using the same team name.", false);
-        return;
+        var savedCount = currentItemCount;
+
+    try {
+        var response = await fetch("/api/rentals", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ teamName: teamName, items: currentLines })
+        });
+        var data = await response.json();
+
+        if (response.ok === false) {
+            showMessage(data.error, false);
+            return;
+        }
+
+        // reset the form
+        var allInputs = document.querySelectorAll(".qty-input");
+        for (var i = 0; i < allInputs.length; i++) {
+            allInputs[i].value = 0;
+        }
+        rentalTeamName.value = "";
+        updateTotal();
+
+        showMessage("Thanks, " + data.teamName + "! Gear request " + data.rental.rentalId + " for " + savedCount +
+            " item(s), " + formatMoney(data.total) + " for the season, is pending. Track it on the My Team page.", true);
+    } catch (error) {
+        showMessage("We couldn't reach LeagueLine right now. Please try again in a minute.", false);
     }
-    if (findRental(application.applicationId) !== null) {
-        showMessage(application.teamName + " already has a gear request. You can check its status on the My Team page.", false);
-        return;
-    }
-
-    // same fields as the rentals collection
-    var rental = {
-        rentalId: "RENT-" + (getAllRentals().length + 2001),
-        applicationId: application.applicationId,
-        status: "pending",
-        requestedAt: todayText(),
-        items: currentLines,
-        gearPaid: false
-    };
-    saveRental(rental);
-
-    var savedCount = currentItemCount;
-    var savedTotal = currentTotal;
-
-    // reset the form
-    var allInputs = document.querySelectorAll(".qty-input");
-    for (var i = 0; i < allInputs.length; i++) {
-        allInputs[i].value = 0;
-    }
-    rentalTeamName.value = "";
-    updateTotal();
-
-    showMessage("Thanks, " + application.teamName + "! We got your request for " + savedCount +
-        " item(s), " + formatMoney(savedTotal) + " for the season. Track it on the My Team page.", true);
 }
 
-// build the cards first, then add the listeners to them
-renderEquipment();
-renderOrderSummary();
+// gets the items from MongoDB, then builds the cards and adds the listeners
+async function loadEquipment() {
+    try {
+        var response = await fetch("/api/equipment");
+        equipmentItems = await response.json();
+    } catch (error) {
+        equipmentList.innerHTML = '<p class="meta">Equipment couldn\'t load right now. Please refresh the page.</p>';
+        return;
+    }
 
-var cards = document.querySelectorAll(".equipment-card");
-for (var i = 0; i < cards.length; i++) {
-    cards[i].addEventListener("mouseenter", showDetails);
-    cards[i].addEventListener("mouseleave", hideDetails);
-}
+    renderEquipment();
+    renderOrderSummary();
 
-var qtyInputs = document.querySelectorAll(".qty-input");
-for (var j = 0; j < qtyInputs.length; j++) {
-    qtyInputs[j].addEventListener("input", updateTotal);
+    // the cards exist now, so the listeners can be added
+    var cards = document.querySelectorAll(".equipment-card");
+    for (var i = 0; i < cards.length; i++) {
+        cards[i].addEventListener("mouseenter", showDetails);
+        cards[i].addEventListener("mouseleave", hideDetails);
+    }
+
+    var qtyInputs = document.querySelectorAll(".qty-input");
+    for (var j = 0; j < qtyInputs.length; j++) {
+        qtyInputs[j].addEventListener("input", updateTotal);
+    }
 }
 
 reserveBtn.addEventListener("click", handleReserveClick);
+loadEquipment();

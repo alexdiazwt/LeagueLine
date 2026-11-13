@@ -40,7 +40,7 @@ function looksLikeEmail(email) {
 }
 
 // click event on Send Message
-function handleContactSubmit() {
+async function handleContactSubmit() {
     var name = contactName.value.trim();
     var email = contactEmail.value.trim();
     var message = contactMessage.value.trim();
@@ -59,12 +59,28 @@ function handleContactSubmit() {
         return;
     }
 
-    showContactMessage("Thanks, " + name + "! We got your " + topic + " question and will reply to " + email + " within 1 business day.", true);
+    try {
+        var response = await fetch("/api/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ senderName: name, senderEmail: email, topic: topic, message: message })
+        });
+        var data = await response.json();
 
-    contactName.value = "";
-    contactEmail.value = "";
-    contactMessage.value = "";
-    contactTopic.value = "league";
+        if (response.ok === false) {
+            showContactMessage(data.error, false);
+            return;
+        }
+
+        showContactMessage("Thanks, " + data.senderName + "! We got your " + data.topic + " question and will reply to " + data.senderEmail + " within 1 business day.", true);
+
+        contactName.value = "";
+        contactEmail.value = "";
+        contactMessage.value = "";
+        contactTopic.value = "league";
+    } catch (error) {
+        showContactMessage("We couldn't reach LeagueLine right now. Please try again in a minute.", false);
+    }
 }
 
 contactBtn.addEventListener("click", handleContactSubmit);

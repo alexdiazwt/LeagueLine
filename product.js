@@ -23,6 +23,27 @@ function updateSpotsDisplay() {
     el.innerHTML = spots + " of " + maxTeams + " team spots remaining this season";
 }
 
+// gets the softball league's numbers from MongoDB when the page opens
+// (the numbers at the top stay as a backup if the server can't be reached)
+async function loadLeague() {
+    try {
+        var response = await fetch("/api/leagues");
+        var leagues = await response.json();
+        for (var i = 0; i < leagues.length; i++) {
+            if (leagues[i].leagueId === "softball-fall-2026") {
+                maxTeams = leagues[i].maxTeams;
+                registeredTeams = leagues[i].registeredTeams;
+                minPlayers = leagues[i].minPlayers;
+                maxPlayers = leagues[i].maxPlayers;
+            }
+        }
+    } catch (error) {
+        // keep the backup numbers
+    }
+    updateSpotsDisplay();
+    handleTeamSizeInput();   // refresh the "Teams need X to Y players" hint
+}
+
 // green message if isSuccess is true, red if false
 function showRegistrationMessage(text, isSuccess) {
     var resultBox = document.getElementById("registrationResult");
@@ -74,12 +95,6 @@ function handleRegistrationSubmit() {
         return;
     }
 
-    // no two teams with the same name
-    if (findApplicationByTeamName(teamName) !== null) {
-        showRegistrationMessage("A team named \"" + teamName + "\" has already applied. Check its status on the My Team page, or pick a different name.", false);
-        return;
-    }
-
     // basic email check - needs an @ and a dot after it
     var atPosition = email.indexOf("@");
     var dotPosition = email.lastIndexOf(".");
@@ -110,40 +125,42 @@ function handleRegistrationSubmit() {
     );
 }
 
-// saves the application after they confirm
-function saveTeamApplication(teamName, managerName, email, teamSize) {
-    // new id after the last one, like APP-1004
-    var newId = "APP-" + (getAllApplications().length + 1001);
+// sends the application to the server after they confirm
+async function saveTeamApplication(teamName, managerName, email, teamSize) {
+    try {
+        var response = await fetch("/api/applications", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                teamName: teamName,
+                managerName: managerName,
+                managerEmail: email,
+                teamSize: teamSize
+            })
+        });
+        var data = await response.json();
 
-    // same fields as the applications collection
-    var application = {
-        applicationId: newId,
-        teamName: teamName,
-        managerName: managerName,
-        managerEmail: email,
-        leagueId: "softball-fall-2026",
-        leagueName: "Fall 2026 Coed Softball League",
-        teamSize: Number(teamSize),
-        status: "pending",
-        submittedAt: todayText(),
-        leagueFee: 250,
-        feePaid: false
-    };
+        // the server said no (bad data or name taken) - show its message
+        if (response.ok === false) {
+            showRegistrationMessage(data.error, false);
+            return;
+        }
 
-    saveApplication(application);
+        showRegistrationMessage(
+            "Thanks, " + data.teamName + "! Application " + data.applicationId + " is pending. We'll confirm your spot by email at " +
+            data.managerEmail + ". Next step: rent any gear you need on the Equipment page, or check your status on My Team.",
+            true
+        );
 
-    // registeredTeams stays the same - applying isn't the same as getting a spot
-    showRegistrationMessage(
-        "Thanks, " + teamName + "! We got your " + teamSize + "-player roster - we'll confirm your spot by email at " + email +
-        ". You can check your status anytime on the My Team page.",
-        true
-    );
-
-    document.getElementById("teamName").value = "";
-    document.getElementById("managerName").value = "";
-    document.getElementById("managerEmail").value = "";
-    document.getElementById("teamSize").value = "";
-    handleTeamSizeInput();   // reset the hint text
+        document.getElementById("teamName").value = "";
+        document.getElementById("managerName").value = "";
+        document.getElementById("managerEmail").value = "";
+        document.getElementById("teamSize").value = "";
+        handleTeamSizeInput();
+    } catch (error) {
+        // the server is off or unreachable
+        showRegistrationMessage("We couldn't reach LeagueLine right now. Please try again in a minute.", false);
+    }
 }
 
 document.getElementById("teamSize").addEventListener("input", handleTeamSizeInput);

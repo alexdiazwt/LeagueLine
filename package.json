@@ -1,0 +1,24 @@
+{
+  "name": "leagueline",
+  "version": "1.0.0",
+  "description": "LeagueLine is a webisite that allows managers and users to view and manage their rec league teams. It is built using Node.js, Express, and MongoDB.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexdiazwt/LeagueLine.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/alexdiazwt/LeagueLine/issues"
+  },
+  "homepage": "https://github.com/alexdiazwt/LeagueLine#readme",
+  "dependencies": {
+    "express": "^5.3.0",
+    "mongodb": "^7.9.0"
+  }
+}

@@ -164,38 +164,49 @@ function handleFeedbackSubmit() {
     );
 }
 
-// saves the review after they confirm
-function postReview(name, rating, comment) {
-    // same fields as the reviews collection
-    var savedReviews = loadSavedList(reviewsKey);
-    savedReviews.push({
-        reviewerName: name,
-        rating: rating,
-        leagueId: "softball-fall-2026",
-        comment: comment,
-        createdAt: todayText()
-    });
-    saveList(reviewsKey, savedReviews);
+// sends the review to the server after they confirm
+async function postReview(name, rating, comment) {
+    try {
+        var response = await fetch("/api/reviews", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reviewerName: name, rating: rating, comment: comment })
+        });
+        var data = await response.json();
 
-    document.getElementById("reviewList").appendChild(buildReviewElement(name, rating, comment));
-    updateRatingSummary();
+        if (response.ok === false) {
+            showFeedbackMessage(data.error, false);
+            return;
+        }
 
-    showFeedbackMessage("Thanks for your feedback, " + name + "!", true);
+        document.getElementById("reviewList").appendChild(buildReviewElement(data.reviewerName, data.rating, data.comment));
+        updateRatingSummary();
+        showFeedbackMessage("Thanks for your feedback, " + data.reviewerName + "! Your review is now posted for other managers to see.", true);
 
-    document.getElementById("reviewerName").value = "";
-    document.getElementById("reviewComment").value = "";
-    document.getElementById("reviewRating").value = "5";
-    handleRatingChange();
-    handleCommentInput();
+        document.getElementById("reviewerName").value = "";
+        document.getElementById("reviewComment").value = "";
+        document.getElementById("reviewRating").value = "5";
+        handleRatingChange();
+        handleCommentInput();
+    } catch (error) {
+        showFeedbackMessage("We couldn't reach LeagueLine right now. Please try again in a minute.", false);
+    }
 }
 
-// adds the reviews saved in this browser after the two on the page
-function showSavedReviews() {
-    var savedReviews = loadSavedList(reviewsKey);
+// loads every review from MongoDB when the page opens
+async function loadReviews() {
     var list = document.getElementById("reviewList");
-    for (var i = 0; i < savedReviews.length; i++) {
-        var review = savedReviews[i];
-        list.appendChild(buildReviewElement(review.reviewerName, review.rating, review.comment));
+    try {
+        var response = await fetch("/api/reviews");
+        var reviews = await response.json();
+
+        list.innerHTML = "";   // remove "Loading reviews..."
+        for (var i = 0; i < reviews.length; i++) {
+            list.appendChild(buildReviewElement(reviews[i].reviewerName, reviews[i].rating, reviews[i].comment));
+        }
+        updateRatingSummary();
+    } catch (error) {
+        list.innerHTML = "<p class=\"meta\">Reviews couldn't load right now. Please refresh the page.</p>";
     }
 }
 
@@ -204,7 +215,6 @@ document.getElementById("reviewComment").addEventListener("input", handleComment
 document.getElementById("submitFeedbackBtn").addEventListener("click", handleFeedbackSubmit);
 
 // when the page loads
-showSavedReviews();
-updateRatingSummary();
+loadReviews();
 handleRatingChange();
 handleCommentInput();

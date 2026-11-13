@@ -103,4 +103,4 @@ prints how many documents each has.
 - `rentals.items[].size` → one of that item's `equipment.sizes`
 
 Until the Node/Express server exists, new applications, gear requests, and reviews are saved
-in the browser (`localStorage`, see `teamdata.js`) using these same fields.
+in the browser (`localStorage`) using these same fields.

@@ -30,7 +30,7 @@ function formatMoney(amount) {
 
 // "2026-09-02" -> "Sep 2, 2026"
 function formatDate(dateText) {
-    var parts = dateText.split("-");   // ["2026", "09", "02"]
+    var parts = dateText.substring(0, 10).split("-");   // keep just "2026-09-02"
     var month = monthNames[Number(parts[1]) - 1];
     return month + " " + Number(parts[2]) + ", " + parts[0];
 }
@@ -176,7 +176,7 @@ function buildBalanceSection(app, rental) {
 }
 
 // click event on Check Status (or Enter)
-function handleLookup() {
+async function handleLookup() {
     var teamName = lookupTeamName.value.trim();
     var email = lookupEmail.value.trim();
 
@@ -186,17 +186,24 @@ function handleLookup() {
         return;
     }
 
-    var app = findApplication(teamName, email);
-    if (app === null) {
-        showLookupError("We couldn't find an application for that team name and email. Check the spelling, or apply on the Softball page.");
-        teamResult.innerHTML = "";
-        return;
+    try {
+        var url = "/api/myteam?teamName=" + encodeURIComponent(teamName) + "&email=" + encodeURIComponent(email);
+        var response = await fetch(url);
+        var data = await response.json();
+
+        if (response.ok === false) {
+            showLookupError(data.error);
+            teamResult.innerHTML = "";
+            return;
+        }
+
+        lookupMessage.className = "message";   // hide old error
+        teamResult.innerHTML = buildApplicationSection(data.application) +
+            buildRentalSection(data.rental) +
+            buildBalanceSection(data.application, data.rental);
+    } catch (error) {
+        showLookupError("We couldn't reach LeagueLine right now. Please try again in a minute.");
     }
-
-    lookupMessage.className = "message";   // hide old error
-    var rental = findRental(app.applicationId);
-
-    teamResult.innerHTML = buildApplicationSection(app) + buildRentalSection(rental) + buildBalanceSection(app, rental);
 }
 
 function handleLookupEnter(event) {
